@@ -3,27 +3,182 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mijn Website</title>
+  <title>Sanne's Online Veiligheid Quiz</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; }
-    header { background: #2c3e50; color: white; padding: 2rem; }
-    section { padding: 2rem; }
-    footer { background: #2c3e50; color: white; padding: 1rem; margin-top: 2rem; }
+    body { font-family: 'Comic Sans MS'; background: #fffbe7; text-align: center; padding: 0; margin: 0; }
+    .quiz-box { background: #fff; padding: 20px; border-radius: 15px; max-width: 600px; margin: 40px auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    h1 { color: #ff6f61; }
+    .question { font-size: 1.3em; margin-bottom: 15px; }
+    .answer { background: #d0f4ff; padding: 12px; margin: 8px; border-radius: 10px; cursor: pointer; font-size: 1.1em; }
+    .answer:hover { background: #90e0ef; }
+    #explanation { font-size: 1.1em; margin-top: 15px; color: #333; }
+    button { background: #ff6f61; color: white; padding: 12px 25px; border: none; border-radius: 8px;
+      margin-top: 15px; font-size: 1.1em; cursor: pointer; }
+    #startScreen { margin-top: 100px; padding: 20px; }
+    #result { font-size: 1.4em; color: #333; margin-top: 20px; white-space: pre-line; }
+    .emoji { font-size: 1.5em; margin-right: 5px; }
+    @keyframes confetti {
+      0% {transform: translateY(0);}
+      100% {transform: translateY(600px);}
+    }
+    .confetti {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: #ff6f61;
+      top: 0;
+      animation: confetti 2s linear infinite;
+    }
+    #endScreen { display:none; padding: 20px; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Welkom op mijn site</h1>
-    <p>Dit is een simpel GitHub Pages voorbeeld</p>
-  </header>
+  <div id="startScreen">
+    <h1>👋 Hoi Sanne!</h1>
+    <p>Online spelen is leuk! Maar soms zijn er mensen die niet aardig zijn.<br>
+    In deze quiz leer jij hoe je een <strong>ONLINE HELD</strong> wordt!</p>
+    <button onclick="startQuiz()">Start Quiz!</button>
+  </div>
 
-  <section>
-    <h2>Over deze site</h2>
-    <p>Deze pagina is gehost via GitHub Pages en bestaat uit één HTML-bestand.</p>
-  </section>
+  <div class="quiz-box" id="quizBox" style="display:none;">
+    <h1>🌟 Sanne's Quiz 🌟</h1>
+    <div id="question" class="question"></div>
+    <div id="answers"></div>
+    <div id="explanation"></div>
+    <button id="nextBtn" onclick="nextQuestion()" style="display:none;">Volgende ➡️</button>
+    <h2 id="result"></h2>
+  </div>
 
-  <footer>
-    <p>&copy; 2025 Mijn Website</p>
-  </footer>
+  <div id="endScreen" class="quiz-box">
+    <h1>🎉 Goed gedaan Sanne! 🎉</h1>
+    <p id="finalScore"></p>
+    <p><strong>Belangrijk om te onthouden:</strong><br>
+    Social media lijkt echt, maar veel dingen zijn gespeeld. Mensen verdienen soms geld door producten te laten zien of door te doen alsof.<br>
+    Jij weet nu hoe je slim kijkt en veilig blijft online! ❤️</p>
+  </div>
+
+  <audio id="good" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+  <audio id="bad" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+  <audio id="finish" src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
+  <audio id="warning" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+
+  <script>
+    const quiz = [
+      {q:"🏠 Wat doe je als iemand vraagt waar je woont?", a:["Je adres geven","Niet zeggen, aan papa/mama vertellen","Alleen straatnaam"], correct:1, exp:"Je huis is privé, dat is jouw veilige plek!"},
+      {q:"🔑 Met wie mag je je wachtwoord delen?", a:["Met niemand","Met je beste vriendin","Met de juf"], correct:0, exp:"Je wachtwoord is als een geheime sleutel, alleen jij hebt die."},
+      {q:"😢 Iemand doet gemeen online. Wat doe je?", a:["Terug gemeen doen","Screenshot en aan papa/mama geven","Niks doen"], correct:1, exp:"Dan kunnen zij je helpen en stopt het sneller."},
+      {q:"🎭 Gebruik je je echte naam overal online?", a:["Ja altijd","Alleen als ouders het goed vinden","Nee, beter een bijnaam"], correct:2, exp:"Met een bijnaam weet niemand wie je echt bent."},
+      {q:"📸 Mag je zomaar een foto van jezelf sturen?", a:["Ja altijd","Nee, eerst aan papa/mama vragen","Alleen als iemand aardig is"], correct:1, exp:"Je weet niet waar de foto heen gaat, dus vraag altijd hulp."},
+      {q:"📱 Een spel vraagt je telefoonnummer. Wat doe je?", a:["Altijd invullen","Niet invullen zonder toestemming","Maakt niet uit"], correct:1, exp:"Je nummer is privé, anders kan een vreemde je bellen."},
+      {q:"💪 Wat is een sterk wachtwoord?", a:["Naam en geboortedatum","Mix van letters, cijfers en tekens","12345"], correct:1, exp:"Zo kan niemand het raden, zelfs een slimme hacker niet!"},
+      {q:"👤 Iemand zegt dat hij je vriend is, maar je kent hem niet.", a:["Toevoegen","Niet accepteren, papa/mama vragen","Gelijk blokkeren"], correct:1, exp:"Sommige mensen doen alsof ze iemand anders zijn."},
+      {q:"🔗 Klik je op elke link die je krijgt?", a:["Ja altijd","Nee, eerst opletten","Alleen als het grappig lijkt"], correct:1, exp:"Sommige linkjes zijn nep en kunnen je tablet kapot maken."},
+      {q:"🤫 Iemand zegt: 'Dit is ons geheimpje!'", a:["Niet vertellen","Altijd aan papa/mama vertellen","Zelf ook geheim delen"], correct:1, exp:"Goede geheimen maken blij. Slechte geheimen moet je delen!"},
+      {q:"👩‍🏫 Wie kan je helpen als je iets raars online ziet?", a:["Niemand","Ouders of leerkracht","Gewoon negeren"], correct:1, exp:"Zij zorgen dat jij veilig blijft."},
+      {q:"😈 Wat betekent cyberpesten?", a:["Leuke grapjes online","Online gemeen doen tegen iemand","Een spelletje"], correct:1, exp:"Cyberpesten is pesten via internet en kan net zo pijn doen als echt pesten."},
+      {q:"🔐 Gebruik je hetzelfde wachtwoord overal?", a:["Ja is makkelijk","Nee, altijd verschillende","Maakt niet uit"], correct:1, exp:"Als één account gehackt wordt, blijven de anderen veilig."},
+      {q:"💻 Je klikt per ongeluk op iets raars. Wat doe je?", a:["Niks zeggen","Aan papa/mama vertellen","Zelf proberen op te lossen"], correct:1, exp:"Zij kunnen snel helpen en alles veilig maken."},
+      {q:"📅 Mag je je schoolrooster online zetten?", a:["Ja, iedereen mag dat zien","Nee, dat is privé","Maakt niet uit"], correct:1, exp:"Het laat zien waar je bent, dat is niet veilig."},
+      {q:"📂 Download je een onbekend bestand?", a:["Ja altijd","Nee, altijd eerst vragen","Alleen als het leuk klinkt"], correct:1, exp:"Downloads kunnen stiekeme virussen hebben."},
+      {q:"📍 Deel je je locatie op social media?", a:["Ja leuk!","Nee, alleen met toestemming ouders","Altijd delen"], correct:1, exp:"Het laat zien waar je bent, dat kan misbruikt worden."},
+      {q:"👯‍♀️ Vriendin wil een geheim account maken. Wat doe je?", a:["Direct maken","Altijd eerst met ouders praten","Gewoon doen, niemand merkt het"], correct:1, exp:"Geheime accounts kunnen gevaarlijk zijn."},
+      {q:"🤳 Mag je zomaar alle foto's van vrienden online zetten?", a:["Ja altijd","Nee, altijd eerst vragen","Alleen op TikTok"], correct:1, exp:"Je moet ook hun privacy beschermen."},
+      {q:"🎁 Je krijgt een bericht: 'Je hebt gewonnen! Klik hier!'", a:["Klikken!","Niet klikken, aan ouders laten zien","Gewoon proberen"], correct:1, exp:"Dit is vaak nep en kan je computer kapot maken."},
+      {q:"📱 Iemand stuurt je een vriendschapsverzoek op Roblox of Instagram. Je herkent de naam een beetje. Wat doe je?", 
+       a:["Toevoegen, misschien is het een vriend","Niet accepteren, eerst papa/mama vragen","Gewoon chatten om te kijken wie het is"], 
+       correct:1,
+       exp:"Sommige mensen doen alsof ze iemand zijn die je kent. Vraag altijd eerst papa of mama voordat je iemand toevoegt."},
+      {q:"📱 Wat is social media?", 
+       a:["Een plek waar je altijd de waarheid ziet","Een plek waar mensen filmpjes delen, maar niet alles is echt","Een plek waar je alles mag doen"], 
+       correct:1,
+       exp:"Op social media laten mensen vaak alleen de leukste stukjes zien. Niet alles wat je ziet is de echte wereld."},
+      {q:"🎭 Zijn mensen op TikTok altijd zichzelf?", 
+       a:["Ja, altijd","Soms spelen ze een rol om leuker te lijken of geld te verdienen","Nee, alles is nep"], 
+       correct:1,
+       exp:"Sommige mensen doen alsof om meer kijkers te krijgen of omdat ze betaald worden. Dat maakt wat je ziet niet altijd echt."},
+      {q:"💰 Verdient iedereen geld met filmpjes maken?", 
+       a:["Ja, iedereen die een filmpje maakt","Nee, maar een paar mensen verdienen geld met vloggen","Ja, als je één filmpje maakt krijg je al geld"], 
+       correct:1,
+       exp:"Bijna niemand kan van filmpjes maken leven. Dat is speciaal werk, net als een acteur."},
+      {q:"🛍️ Iemand op Instagram zegt dat een product geweldig is. Wat moet je onthouden?", 
+       a:["Misschien krijgt die persoon geld om dat te zeggen","Dat product is altijd goed","Je moet het meteen kopen"], 
+       correct:0,
+       exp:"Influencers worden vaak betaald om iets te laten zien. Ze doen soms alsof ze het gebruiken, ook al vinden ze het zelf niet zo leuk."},
+      {q:"🌍 Is social media hetzelfde als de echte wereld?", 
+       a:["Ja, precies hetzelfde","Nee, social media laat vaak alleen de mooiste stukjes zien","Nee, alles is nep"], 
+       correct:1,
+       exp:"Social media is een beetje als een film: het ziet er mooi uit, maar in het echt is niet alles perfect zoals daar."},
+      {q:"👥 Iemand op TikTok of Roblox zegt dat hij je vriend is. Wat doe je?", 
+       a:["Meteen vertrouwen","Eerst aan papa/mama vragen, want het kan iemand zijn die doet alsof","Meteen afspreken"], 
+       correct:1,
+       exp:"Online kan iemand zich voordoen als iemand anders. Vraag altijd hulp aan papa of mama."}
+    ];
+
+    let current = 0; let score = 0;
+
+    function startQuiz() {
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("quizBox").style.display = "block";
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = quiz[current];
+      document.getElementById("question").innerText = q.q;
+      document.getElementById("answers").innerHTML = "";
+      document.getElementById("explanation").innerText = "";
+      document.getElementById("nextBtn").style.display = "none";
+      q.a.forEach((ans, i) => {
+        const div = document.createElement("div");
+        div.className = "answer";
+        div.innerText = ans;
+        div.onclick = () => checkAnswer(i);
+        document.getElementById("answers").appendChild(div);
+      });
+    }
+
+    function checkAnswer(i) {
+      const q = quiz[current];
+      if(i === q.correct) {
+        score++;
+        document.getElementById("good").play();
+        document.getElementById("explanation").innerText = "✅ Goed gedaan! " + q.exp;
+      } else {
+        document.getElementById("bad").play();
+        document.getElementById("explanation").innerText = "❌ Oeps! " + q.exp;
+      }
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+      current++;
+      if(current < quiz.length) {
+        loadQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      document.getElementById("quizBox").style.display = "none";
+      document.getElementById("endScreen").style.display = "block";
+      document.getElementById("finish").play();
+      let message = score >= 20 ? "🎉 Super Sanne! Je bent een echte ONLINE HELD! 🎉" : "Goed gedaan! Je hebt veel geleerd!";
+      document.getElementById("finalScore").innerText = `${message}\nJe had ${score} van de ${quiz.length} goed.`;
+      if(score >= 20) { spawnConfetti(); }
+    }
+
+    function spawnConfetti() {
+      for(let i=0; i<100; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * window.innerWidth + "px";
+        c.style.backgroundColor = ["#ff6f61","#ffd166","#06d6a0","#118ab2"][Math.floor(Math.random()*4)];
+        c.style.animationDuration = (2 + Math.random()*3) + "s";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(), 5000);
+      }
+    }
+  </script>
 </body>
 </html>
