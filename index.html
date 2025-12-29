@@ -1,138 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Veiligheid Quiz</title>
-  <style>
-    body { font-family: 'Comic Sans MS', Arial, sans-serif; background: #f0f8ff; margin: 0; padding: 0; }
-    header { background: #ff6f61; color: white; padding: 1rem; text-align: center; }
-    .quiz-container { max-width: 800px; margin: auto; padding: 1rem; }
-    .question { background: #fff3cd; padding: 1rem; margin-bottom: 1rem; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .question h3 { color: #ff6f61; }
-    button { padding: 0.7rem 1rem; margin: 0.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; }
-    button:hover { opacity: 0.9; }
-    .correct { background-color: #4caf50; color: white; }
-    .wrong { background-color: #e74c3c; color: white; }
-    #result { text-align: center; font-size: 1.4rem; margin: 2rem; color: #2c3e50; }
-    .explanation { font-size: 1rem; margin-top: 0.5rem; color: #333; padding: 0.5rem; background: #e7f3fe; border-radius: 5px; }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EvacSafe | Advies & OAI</title>
+  <meta name="description" content="EvacSafe – advies, projectering en onderhoud van ontruimingsalarminstallaties." />
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
+
 <body>
-  <header>
-    <h1>🛡️ Online Veiligheid Quiz 🛡️</h1>
-    <p>Leer veilig omgaan met internet en sociale media!</p>
+  <header class="header">
+    <div class="container header__inner">
+      <div class="brand">
+        <div class="brand__mark"></div>
+        <div>
+          <strong>EvacSafe</strong><br />
+          <span class="brand__tag">Advies & OAI</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#">Diensten</a>
+        <a href="#">Projecten</a>
+        <a href="#">Over</a>
+        <a href="#" class="btn btn--small">Plan adviesgesprek</a>
+      </nav>
+    </div>
   </header>
-  <div class="quiz-container" id="quiz">
-  </div>
-  <div id="result"></div>
 
-  <script>
-    const questions = [
-      {
-        q: "📱 Sanne krijgt op TikTok een bericht: 'Hey, ik ben Lisa en ik zit ook in jouw klas. Voeg me toe als vriend!' Ze kent de naam niet, maar de profielfoto lijkt op iemand van school. Wat moet ze doen?",
-        answers: [
-          {text: "Niet accepteren en eerst controleren bij school of vrienden.", correct: true, explanation: "✅ Goed! Je weet nooit of iemand zich voordoet als iemand anders. Eerst controleren is veilig."},
-          {text: "Direct accepteren, want de foto lijkt echt.", correct: false, explanation: "❌ Fout. Foto’s kunnen gestolen zijn. Alleen omdat het lijkt, betekent niet dat het veilig is."}
-        ]
-      },
-      {
-        q: "🎮 In Roblox biedt iemand Sanne gratis Robux aan als ze haar e-mailadres geeft. Wat moet ze doen?",
-        answers: [
-          {text: "Niet geven en de speler blokkeren.", correct: true, explanation: "✅ Goed! Niemand mag om je privégegevens vragen. Dit kan een scam zijn om je account te stelen."},
-          {text: "Geven, want ze wil graag Robux.", correct: false, explanation: "❌ Fout. Gratis beloftes zijn vaak nep. Je e-mail kan gebruikt worden om je te hacken."}
-        ]
-      },
-      {
-        q: "📺 Een YouTuber zegt: 'Iedereen die cool wil zijn, moet dit product kopen! Alleen echte fans kopen het!' Hoe moet Sanne hiermee omgaan?",
-        answers: [
-          {text: "Niet zomaar kopen en eerst met ouders praten.", correct: true, explanation: "✅ Goed! YouTubers worden vaak betaald om dingen te promoten. Het betekent niet dat je het moet hebben om cool te zijn."},
-          {text: "Direct kopen om erbij te horen.", correct: false, explanation: "❌ Fout. Dit is precies wat de reclame wil. Je moet zelf kiezen en niet door druk van influencers."}
-        ]
-      },
-      {
-        q: "🌍 Sanne speelt een online spel en iemand vraagt haar waar ze woont. Wat moet ze antwoorden?",
-        answers: [
-          {text: "Geen adres geven, hooguit de stad als het een vriend is die ze echt kent.", correct: true, explanation: "✅ Goed! Adressen en persoonlijke informatie zijn privé. Je weet nooit wie er aan de andere kant zit."},
-          {text: "Het adres geven, want het lijkt een aardige speler.", correct: false, explanation: "❌ Fout. Aardige mensen online kunnen zich anders voordoen. Veiligheid eerst."}
-        ]
-      },
-      {
-        q: "📸 Op Instagram vraagt iemand Sanne om een grappige foto van zichzelf te sturen in ruil voor een spelcode. Wat moet ze doen?",
-        answers: [
-          {text: "Niet sturen en het aan een ouder vertellen.", correct: true, explanation: "✅ Goed! Niemand mag om persoonlijke foto's vragen. Dit kan misbruikt worden."},
-          {text: "Sturen, want het is maar een grapje.", correct: false, explanation: "❌ Fout. Je weet nooit hoe foto's online gebruikt worden. Altijd eerst met een ouder praten."}
-        ]
-      },
-      {
-        q: "📧 Sanne ontvangt een e-mail: 'Je hebt een prijs gewonnen, klik hier om je gegevens in te vullen!' Wat moet ze doen?",
-        answers: [
-          {text: "Niet klikken en de e-mail verwijderen.", correct: true, explanation: "✅ Goed! Dit is waarschijnlijk phishing. Klik nooit op onbekende links."},
-          {text: "Klikken en gegevens invullen om de prijs te claimen.", correct: false, explanation: "❌ Fout. Dit is hoe oplichters persoonlijke gegevens stelen."}
-        ]
-      },
-      {
-        q: "🔑 Een vriend vraagt om het wachtwoord van Sanne's gameaccount om iets voor haar te kopen. Wat moet ze doen?",
-        answers: [
-          {text: "Nee zeggen, wachtwoorden zijn altijd geheim.", correct: true, explanation: "✅ Goed! Wachtwoorden deel je nooit, zelfs niet met vrienden."},
-          {text: "Geven, want hij is een goede vriend.", correct: false, explanation: "❌ Fout. Zelfs vrienden mogen je wachtwoord niet hebben. Accounts zijn privé."}
-        ]
-      },
-      {
-        q: "📱 Sanne ziet een advertentie: 'Download deze gratis app om meer volgers te krijgen!' Wat moet ze doen?",
-        answers: [
-          {text: "Niet downloaden en wegklikken.", correct: true, explanation: "✅ Goed! Zulke apps kunnen virussen bevatten of je account stelen."},
-          {text: "Downloaden om populair te worden.", correct: false, explanation: "❌ Fout. Gratis volgers zijn vaak nep en gevaarlijk."}
-        ]
-      },
-      {
-        q: "🏫 In een online chat vraagt iemand naar de naam van Sanne's school. Wat moet ze doen?",
-        answers: [
-          {text: "Niet vertellen tenzij ze de persoon echt kent.", correct: true, explanation: "✅ Goed! Zelfs schoolnamen kunnen gebruikt worden om je te vinden. Wees voorzichtig."},
-          {text: "Vertellen, het is toch geen geheim.", correct: false, explanation: "❌ Fout. Dit is persoonlijke informatie die misbruikt kan worden."}
-        ]
-      },
-      {
-        q: "🔗 Sanne's vriend zegt dat hij een geheime chatgroep heeft waar ze moet joinen via een link. Ze kent de link niet. Wat moet ze doen?",
-        answers: [
-          {text: "Niet klikken en eerst met haar vriend in het echt praten.", correct: true, explanation: "✅ Goed! Onbekende links kunnen gevaarlijk zijn, zelfs als ze van een vriend lijken te komen."},
-          {text: "Klikken, want het komt van een vriend.", correct: false, explanation: "❌ Fout. Links kunnen gehackt of nep zijn. Altijd controleren."}
-        ]
-      }
-    ];
+  <main>
+    <section class="hero">
+      <div class="container">
+        <p class="kicker">Ontruimingsveiligheid, helder geregeld</p>
+        <h1>EvacSafe. Zekerheid in ontruiming, zonder gedoe.</h1>
+        <p class="lead">
+          Advies, projectering en onderhoud van ontruimingsalarminstallaties
+          met duidelijke rapportage en praktische verbeterpunten.
+        </p>
 
-    const quizContainer = document.getElementById('quiz');
-    let score = 0;
+        <div class="actions">
+          <a class="btn" href="#">Plan adviesgesprek</a>
+          <a class="btn btn--ghost" href="#">Bekijk diensten</a>
+        </div>
+      </div>
+    </section>
 
-    questions.forEach((question, index) => {
-      const qDiv = document.createElement('div');
-      qDiv.classList.add('question');
-      qDiv.innerHTML = `<h3>Vraag ${index+1}</h3><p>${question.q}</p>`;
+    <section class="section">
+      <div class="container cards">
+        <div class="card">
+          <h3>Beoordeling OAI & advies</h3>
+          <p>Inzicht in risico’s, status en prioriteiten. Geen ruis.</p>
+        </div>
 
-      question.answers.forEach(answer => {
-        const btn = document.createElement('button');
-        btn.innerText = answer.text;
-        btn.onclick = () => {
-          if (btn.disabled) return;
-          if (answer.correct) {
-            btn.classList.add('correct');
-            score++;
-          } else {
-            btn.classList.add('wrong');
-          }
-          const exp = document.createElement('div');
-          exp.classList.add('explanation');
-          exp.innerText = answer.explanation;
-          qDiv.appendChild(exp);
-          qDiv.querySelectorAll('button').forEach(b => b.disabled = true);
-          if (index === questions.length - 1) {
-            document.getElementById('result').innerText = `🎉 Je hebt ${score} van de ${questions.length} goed! 🎉`;
-          }
-        };
-        qDiv.appendChild(btn);
-      });
-      quizContainer.appendChild(qDiv);
-    });
-  </script>
+        <div class="card">
+          <h3>Projectering & engineering</h3>
+          <p>Logisch ontwerp, toetsbaar en onderhoudbaar.</p>
+        </div>
+
+        <div class="card">
+          <h3>Onderhoud & optimalisatie</h3>
+          <p>Structurele oplossingen, geen lapwerk.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container cta__inner">
+        <div>
+          <h2>Wil je weten waar je staat?</h2>
+          <p>Een korte intake geeft direct duidelijkheid.</p>
+        </div>
+        <a class="btn" href="#">Plan adviesgesprek</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <strong>EvacSafe</strong><br />
+        <span>Advies, projectering en onderhoud OAI</span>
+      </div>
+      <div>
+        © <span id="year"></span> EvacSafe
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/script.js"></script>
 </body>
 </html>
